@@ -60,3 +60,14 @@ Route::get('storage-link', function () {
 
 Route::get('version-update', [VersionUpdateController::class, 'versionUpdate'])->name('version-update')->withoutMiddleware(['version.update']);
 Route::post('process-update', [VersionUpdateController::class, 'processUpdate'])->name('process-update')->withoutMiddleware(['version.update']);
+
+// Plugin Management Routes
+Route::prefix('admin/plugins')
+    ->middleware(['web', 'auth', 'admin'])
+    ->name('admin.plugins.')
+    ->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\PluginController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\PluginController::class, 'create'])->name('create');
+        Route::post('/store', [App\Http\Controllers\Admin\PluginController::class, 'store'])->name('store');
+        Route::delete('/destroy/{name}', [App\Http\Controllers\Admin\PluginController::class, 'destroy'])->name('destroy');
+    });
